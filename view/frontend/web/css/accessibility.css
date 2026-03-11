@@ -1,0 +1,327 @@
+/**
+ * BFSG Accessibility Styles
+ *
+ * Covers:
+ * - Screen-reader-only utility class
+ * - Keyboard focus visibility (WCAG 2.4.7)
+ * - High contrast mode (WCAG 1.4.3)
+ * - Dyslexia-friendly font (OpenDyslexic with system fallback)
+ * - Font scaling reflow without horizontal scrollbar (WCAG 1.4.4)
+ * - Accessibility widget overlay
+ * - Session timeout dialog
+ */
+
+/* ── Screen reader only (visually hidden but accessible) ──────────────────── */
+.bfsg-sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/* ── Keyboard navigation focus ring (WCAG 2.4.7) ─────────────────────────── */
+/* Only show enhanced focus ring when navigating by keyboard */
+.bfsg-keyboard-nav :focus {
+    outline: 3px solid #005fcc !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 5px rgba(0, 95, 204, 0.25) !important;
+}
+
+.bfsg-keyboard-nav :focus:not(:focus-visible) {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.bfsg-keyboard-nav :focus-visible {
+    outline: 3px solid #005fcc !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 5px rgba(0, 95, 204, 0.25) !important;
+}
+
+/* ── Font scaling – no horizontal overflow (WCAG 1.4.4) ──────────────────── */
+html {
+    /* Font size is controlled via JS; prevent page overflow at large sizes */
+    overflow-x: hidden;
+}
+
+body {
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* ── High contrast mode (WCAG 1.4.3) ─────────────────────────────────────── */
+body.bfsg-high-contrast {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+
+body.bfsg-high-contrast a {
+    color: #ffff00 !important;
+    text-decoration: underline !important;
+}
+
+body.bfsg-high-contrast a:visited {
+    color: #ff9900 !important;
+}
+
+body.bfsg-high-contrast button,
+body.bfsg-high-contrast .action-primary,
+body.bfsg-high-contrast .action.primary {
+    background-color: #ffff00 !important;
+    color: #000 !important;
+    border: 2px solid #fff !important;
+}
+
+body.bfsg-high-contrast input,
+body.bfsg-high-contrast select,
+body.bfsg-high-contrast textarea {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+}
+
+body.bfsg-high-contrast img {
+    filter: invert(1) hue-rotate(180deg);
+}
+
+body.bfsg-high-contrast .bfsg-high-contrast-ignore {
+    filter: none;
+}
+
+/* ── Dyslexia-friendly font ──────────────────────────────────────────────── */
+/*
+ * OpenDyslexic is a free font designed to aid readers with dyslexia.
+ * Shop owners must supply the font files; we reference them here.
+ * Fallback is a humanist sans-serif which is also easier to read.
+ */
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('../fonts/OpenDyslexic-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+body.bfsg-dyslexia-font,
+body.bfsg-dyslexia-font p,
+body.bfsg-dyslexia-font span,
+body.bfsg-dyslexia-font li,
+body.bfsg-dyslexia-font td,
+body.bfsg-dyslexia-font h1,
+body.bfsg-dyslexia-font h2,
+body.bfsg-dyslexia-font h3,
+body.bfsg-dyslexia-font h4,
+body.bfsg-dyslexia-font h5,
+body.bfsg-dyslexia-font h6,
+body.bfsg-dyslexia-font input,
+body.bfsg-dyslexia-font textarea,
+body.bfsg-dyslexia-font select,
+body.bfsg-dyslexia-font button {
+    font-family: 'OpenDyslexic', 'Comic Sans MS', 'Trebuchet MS', Verdana, sans-serif !important;
+    letter-spacing: 0.05em;
+    word-spacing: 0.1em;
+    line-height: 1.6;
+}
+
+/* ── Accessibility Widget ─────────────────────────────────────────────────── */
+.bfsg-widget {
+    position: fixed;
+    z-index: 9999;
+}
+
+.bfsg-widget--bottom-right { bottom: 24px; right: 24px; }
+.bfsg-widget--bottom-left  { bottom: 24px; left: 24px; }
+.bfsg-widget--top-right    { top: 24px; right: 24px; }
+.bfsg-widget--top-left     { top: 24px; left: 24px; }
+
+.bfsg-widget__toggle {
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    background: #005fcc !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: background 0.2s, transform 0.1s;
+    line-height: 1 !important;
+    font-size: 0 !important; /* hide any injected text from theme */
+}
+
+.bfsg-widget__toggle svg {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+.bfsg-widget__toggle:hover,
+.bfsg-widget__toggle:focus {
+    background: #003d99 !important;
+    transform: scale(1.05);
+}
+
+.bfsg-widget__panel {
+    position: absolute;
+    bottom: 64px;
+    right: 0;
+    width: 280px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+}
+
+/* Reposition panel for left-side widgets */
+.bfsg-widget--bottom-left  .bfsg-widget__panel,
+.bfsg-widget--top-left     .bfsg-widget__panel { right: auto; left: 0; }
+
+.bfsg-widget--top-right    .bfsg-widget__panel,
+.bfsg-widget--top-left     .bfsg-widget__panel { bottom: auto; top: 64px; }
+
+.bfsg-widget__header {
+    background: #005fcc;
+    color: #fff;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.bfsg-widget__title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.bfsg-widget__close {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 4px;
+}
+
+.bfsg-widget__close:hover,
+.bfsg-widget__close:focus {
+    opacity: 0.8;
+}
+
+.bfsg-widget__body {
+    padding: 12px;
+}
+
+.bfsg-widget__option {
+    margin-bottom: 8px;
+}
+
+.bfsg-widget__option-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #444;
+    margin: 0 0 4px;
+}
+
+.bfsg-option-btn {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px;
+    width: 100% !important;
+    padding: 10px 14px !important;
+    background: #f5f5f5 !important;
+    color: #1a1a1a !important;
+    border: 1px solid #ddd !important;
+    border-radius: 6px !important;
+    cursor: pointer;
+    font-size: 0.95rem !important;
+    text-align: left !important;
+    transition: background 0.15s;
+    line-height: 1.4 !important;
+    min-width: 0 !important;
+}
+
+.bfsg-option-btn:hover,
+.bfsg-option-btn:focus {
+    background: #e8e8e8 !important;
+    color: #1a1a1a !important;
+}
+
+.bfsg-option-btn[aria-pressed="true"] {
+    background: #005fcc !important;
+    color: #fff !important;
+    border-color: #003d99 !important;
+}
+
+.bfsg-option-btn--sm {
+    width: auto;
+    padding: 6px 12px;
+    font-weight: 700;
+}
+
+.bfsg-fontsize-controls {
+    display: flex;
+    gap: 6px;
+}
+
+.bfsg-option-btn__icon {
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+.bfsg-widget__footer {
+    padding: 8px 12px;
+    background: #f9f9f9;
+    border-top: 1px solid #eee;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+.bfsg-widget__footer p {
+    margin: 0;
+}
+
+/* ── Session timeout dialog ───────────────────────────────────────────────── */
+.bfsg-session-warning {
+    display: none; /* shown via JS inline style to beat theme CSS specificity */
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.bfsg-session-warning__inner {
+    background: #fff;
+    border-radius: 8px;
+    padding: 32px;
+    max-width: 440px;
+    width: 90%;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    text-align: center;
+}
+
+/* ── Form validation ARIA enhancements ───────────────────────────────────── */
+[aria-invalid="true"] {
+    border-color: #cc0000 !important;
+    box-shadow: 0 0 0 2px rgba(204, 0, 0, 0.2) !important;
+}
+
+.mage-error[role="alert"],
+.field-error[role="alert"] {
+    color: #cc0000;
+    font-size: 0.9em;
+}

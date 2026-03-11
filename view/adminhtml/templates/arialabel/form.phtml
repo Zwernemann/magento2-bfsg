@@ -1,0 +1,138 @@
+<?php
+/** @var \Zwernemann\BFSG\Block\Adminhtml\AriaLabel\Edit\Form $block */
+$item  = $block->getAriaLabel();
+$isNew = !$item->getId();
+?>
+<div class="bfsg-arialabel-form" style="padding: 20px;">
+    <h2><?= $block->escapeHtml($isNew ? __('New ARIA Label') : __('Edit ARIA Label')) ?></h2>
+    <p>
+        <?= $block->escapeHtml(__('Map a CSS selector to an aria-label or aria-describedby value. The frontend JavaScript will apply these attributes automatically at page load.')) ?>
+    </p>
+
+    <form action="<?= $block->escapeUrl($block->getSaveUrl()) ?>" method="post" id="bfsg-arialabel-form">
+        <?= $block->getBlockHtml('formkey') ?>
+
+        <?php if ($item->getId()): ?>
+            <input type="hidden" name="entity_id" value="<?= (int) $item->getId() ?>"/>
+        <?php endif; ?>
+
+        <fieldset class="admin__fieldset">
+            <legend class="admin__legend"><span><?= $block->escapeHtml(__('Element Definition')) ?></span></legend>
+
+            <div class="admin__field _required">
+                <label class="admin__field-label" for="element_selector">
+                    <?= $block->escapeHtml(__('CSS Selector')) ?>
+                </label>
+                <div class="admin__field-control">
+                    <input type="text"
+                           id="element_selector"
+                           name="element_selector"
+                           class="admin__control-text"
+                           required
+                           placeholder="#search, .action-tocart, button[data-role=proceed-to-checkout]"
+                           value="<?= $block->escapeHtmlAttr((string) $item->getElementSelector()) ?>"/>
+                    <p class="admin__field-note">
+                        <?= $block->escapeHtml(__('Standard CSS selector targeting the element(s) to label. Be specific to avoid unintended matches.')) ?>
+                    </p>
+                </div>
+            </div>
+
+            <div class="admin__field _required">
+                <label class="admin__field-label" for="element_type">
+                    <?= $block->escapeHtml(__('Element Type')) ?>
+                </label>
+                <div class="admin__field-control">
+                    <select id="element_type" name="element_type" class="admin__control-select" required>
+                        <?php foreach ($block->getElementTypes() as $value => $label): ?>
+                            <option value="<?= $block->escapeHtmlAttr($value) ?>"
+                                <?= ($item->getElementType() === $value ? 'selected' : '') ?>>
+                                <?= $block->escapeHtml($label) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="admin__field">
+                <label class="admin__field-label" for="aria_label">
+                    <?= $block->escapeHtml(__('aria-label Value')) ?>
+                </label>
+                <div class="admin__field-control">
+                    <input type="text"
+                           id="aria_label"
+                           name="aria_label"
+                           class="admin__control-text"
+                           placeholder="<?= $block->escapeHtmlAttr(__('e.g. Add to Cart, Search products')) ?>"
+                           value="<?= $block->escapeHtmlAttr((string) $item->getAriaLabel()) ?>"/>
+                    <p class="admin__field-note">
+                        <?= $block->escapeHtml(__('Sets the aria-label attribute. Use when the visible label is absent or insufficient. (WCAG 4.1.2)')) ?>
+                    </p>
+                </div>
+            </div>
+
+            <div class="admin__field">
+                <label class="admin__field-label" for="aria_describedby">
+                    <?= $block->escapeHtml(__('aria-describedby ID')) ?>
+                </label>
+                <div class="admin__field-control">
+                    <input type="text"
+                           id="aria_describedby"
+                           name="aria_describedby"
+                           class="admin__control-text"
+                           placeholder="<?= $block->escapeHtmlAttr(__('e.g. password-hint, promo-info')) ?>"
+                           value="<?= $block->escapeHtmlAttr((string) $item->getAriaDescribedby()) ?>"/>
+                    <p class="admin__field-note">
+                        <?= $block->escapeHtml(__('The ID of an existing element that describes this element. Links the element to additional instructions. (WCAG 3.3.2)')) ?>
+                    </p>
+                </div>
+            </div>
+
+            <div class="admin__field">
+                <label class="admin__field-label" for="store_id">
+                    <?= $block->escapeHtml(__('Store View')) ?>
+                </label>
+                <div class="admin__field-control">
+                    <input type="number"
+                           id="store_id"
+                           name="store_id"
+                           class="admin__control-text"
+                           min="0"
+                           value="<?= (int) $item->getStoreId() ?>"/>
+                    <p class="admin__field-note">
+                        <?= $block->escapeHtml(__('Store view ID. Use 0 for all stores.')) ?>
+                    </p>
+                </div>
+            </div>
+
+            <div class="admin__field">
+                <label class="admin__field-label" for="is_active">
+                    <?= $block->escapeHtml(__('Active')) ?>
+                </label>
+                <div class="admin__field-control">
+                    <select id="is_active" name="is_active" class="admin__control-select">
+                        <option value="1" <?= ((int) $item->getIsActive() === 1 || $isNew) ? 'selected' : '' ?>>
+                            <?= $block->escapeHtml(__('Yes')) ?>
+                        </option>
+                        <option value="0" <?= ((int) $item->getIsActive() === 0 && !$isNew) ? 'selected' : '' ?>>
+                            <?= $block->escapeHtml(__('No')) ?>
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="page-actions" style="margin-top: 20px;">
+            <button type="submit" class="action-default scalable primary">
+                <?= $block->escapeHtml(__('Save')) ?>
+            </button>
+            &nbsp;
+            <button type="submit" name="back" value="1" class="action-default scalable">
+                <?= $block->escapeHtml(__('Save and Continue Edit')) ?>
+            </button>
+            &nbsp;
+            <a href="<?= $block->escapeUrl($block->getBackUrl()) ?>" class="action-default scalable">
+                <?= $block->escapeHtml(__('Back')) ?>
+            </a>
+        </div>
+    </form>
+</div>

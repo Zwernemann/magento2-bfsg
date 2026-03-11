@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Zwernemann_BFSG::bfsg"
+             title="BFSG Accessibility"
+             module="Zwernemann_BFSG"
+             sortOrder="60"
+             resource="Zwernemann_BFSG::bfsg"/>
+        <add id="Zwernemann_BFSG::check"
+             title="Accessibility Check"
+             module="Zwernemann_BFSG"
+             sortOrder="10"
+             parent="Zwernemann_BFSG::bfsg"
+             action="bfsg/check/index"
+             resource="Zwernemann_BFSG::check"/>
+        <add id="Zwernemann_BFSG::arialabel"
+             title="ARIA Label Manager"
+             module="Zwernemann_BFSG"
+             sortOrder="20"
+             parent="Zwernemann_BFSG::bfsg"
+             action="bfsg/arialabel/index"
+             resource="Zwernemann_BFSG::arialabel"/>
+        <add id="Zwernemann_BFSG::config"
+             title="Configuration"
+             module="Zwernemann_BFSG"
+             sortOrder="30"
+             parent="Zwernemann_BFSG::bfsg"
+             action="adminhtml/system_config/edit/section/bfsg"
+             resource="Zwernemann_BFSG::config"/>
+    </menu>
+</config>

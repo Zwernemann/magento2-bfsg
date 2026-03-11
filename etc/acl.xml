@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Zwernemann_BFSG::bfsg" title="BFSG Accessibility" sortOrder="60">
+                    <resource id="Zwernemann_BFSG::check" title="Accessibility Check" sortOrder="10"/>
+                    <resource id="Zwernemann_BFSG::arialabel" title="ARIA Label Manager" sortOrder="20"/>
+                    <resource id="Zwernemann_BFSG::config" title="Configuration" sortOrder="30"/>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

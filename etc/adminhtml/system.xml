@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="bfsg" translate="label" sortOrder="400">
+            <label>BFSG Accessibility</label>
+        </tab>
+        <section id="bfsg" translate="label" type="text" sortOrder="100"
+                 showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>BFSG Accessibility</label>
+            <tab>bfsg</tab>
+            <resource>Zwernemann_BFSG::config</resource>
+
+            <group id="general" translate="label" type="text" sortOrder="10"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Module</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+
+            <group id="widget" translate="label" type="text" sortOrder="20"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Accessibility Widget (Frontend Overlay)</label>
+                <comment>A locally hosted, GDPR-compliant accessibility widget (similar to UserWay/AccessiBe).</comment>
+                <field id="enabled" translate="label" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Widget</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="position" translate="label" type="select" sortOrder="20"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Widget Position</label>
+                    <source_model>Zwernemann\BFSG\Model\Config\Source\Position</source_model>
+                </field>
+                <field id="show_contrast" translate="label" type="select" sortOrder="30"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show High Contrast Toggle</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="show_font_size" translate="label" type="select" sortOrder="40"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show Font Size Controls</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="show_dyslexia" translate="label" type="select" sortOrder="50"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show Dyslexia-Friendly Font Toggle</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+
+            <group id="session" translate="label" type="text" sortOrder="30"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Session Timeout Warning (WCAG 2.2.1)</label>
+                <field id="timeout_warning" translate="label comment" type="text" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Warning Before Timeout (seconds)</label>
+                    <comment>Show warning dialog this many seconds before session expires. Default: 120 (2 minutes).</comment>
+                    <validate>validate-number validate-greater-than-zero</validate>
+                </field>
+                <field id="session_lifetime" translate="label comment" type="text" sortOrder="20"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Session Lifetime (seconds)</label>
+                    <comment>Must match your PHP session lifetime (session.gc_maxlifetime). Default: 3600 (1 hour).</comment>
+                    <validate>validate-number validate-greater-than-zero</validate>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

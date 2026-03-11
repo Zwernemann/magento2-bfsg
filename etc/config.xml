@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <bfsg>
+            <general>
+                <enabled>1</enabled>
+            </general>
+            <widget>
+                <enabled>1</enabled>
+                <position>bottom-right</position>
+                <show_contrast>1</show_contrast>
+                <show_font_size>1</show_font_size>
+                <show_dyslexia>1</show_dyslexia>
+            </widget>
+            <session>
+                <timeout_warning>120</timeout_warning>
+                <session_lifetime>3600</session_lifetime>
+            </session>
+        </bfsg>
+    </default>
+</config>

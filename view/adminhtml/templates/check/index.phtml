@@ -1,0 +1,139 @@
+<?php
+/** @var \Zwernemann\BFSG\Block\Adminhtml\Check\Index $block */
+?>
+<div class="bfsg-check-container" style="padding: 20px;">
+
+    <h2><?= $block->escapeHtml(__('WCAG 2.1 Accessibility Scanner')) ?></h2>
+    <p>
+        <?= $block->escapeHtml(__('Scans your CMS pages and product descriptions for common WCAG 2.1 / BFSG violations: missing alt texts, heading hierarchy skips, and inaccessible links.')) ?>
+    </p>
+
+    <div style="margin-bottom: 20px;">
+        <button id="bfsg-run-all" class="action-default scalable primary" type="button">
+            <?= $block->escapeHtml(__('Scan Everything')) ?>
+        </button>
+        &nbsp;
+        <button id="bfsg-run-cms" class="action-default scalable" type="button">
+            <?= $block->escapeHtml(__('Scan CMS Pages Only')) ?>
+        </button>
+        &nbsp;
+        <button id="bfsg-run-products" class="action-default scalable" type="button">
+            <?= $block->escapeHtml(__('Scan Products Only')) ?>
+        </button>
+    </div>
+
+    <div id="bfsg-loading" style="display:none;">
+        <img src="<?= $block->escapeUrl($block->getViewFileUrl('images/loader-2.gif')) ?>" alt="Loading…"/>
+        <?= $block->escapeHtml(__('Scanning… This may take a moment for large stores.')) ?>
+    </div>
+
+    <div id="bfsg-results" role="region" aria-live="polite" aria-label="<?= $block->escapeHtmlAttr(__('Scan Results')) ?>"></div>
+</div>
+
+<script>
+require(['jquery', 'mage/translate'], function ($, $t) {
+    'use strict';
+
+    var runUrl = '<?= $block->escapeJs($block->getRunUrl()) ?>';
+
+    function escapeHtml(str) {
+        return $('<div>').text(str).html();
+    }
+
+    function runScan(type) {
+        $('#bfsg-loading').show();
+        $('#bfsg-results').html('');
+
+        $.ajax({
+            url: runUrl,
+            type: 'GET',
+            data: {type: type},
+            dataType: 'json',
+            success: function (response) {
+                $('#bfsg-loading').hide();
+                if (!response.success) {
+                    $('#bfsg-results').html(
+                        '<div class="message message-error error"><p>' +
+                        escapeHtml(response.message) + '</p></div>'
+                    );
+                    return;
+                }
+                renderResults(response.data);
+            },
+            error: function () {
+                $('#bfsg-loading').hide();
+                $('#bfsg-results').html(
+                    '<div class="message message-error error"><p>' +
+                    escapeHtml($t('An error occurred during the scan. Please try again.')) +
+                    '</p></div>'
+                );
+            }
+        });
+    }
+
+    function renderResults(data) {
+        var allItems = (data.cms_pages || []).concat(data.products || []);
+        var html = '';
+
+        if (allItems.length === 0) {
+            html = '<div class="message message-success success"><p>' +
+                escapeHtml($t('No accessibility issues found. Well done!')) +
+                '</p></div>';
+            $('#bfsg-results').html(html);
+            return;
+        }
+
+        var errorCount   = 0;
+        var warningCount = 0;
+
+        allItems.forEach(function (item) {
+            item.issues.forEach(function (issue) {
+                if (issue.severity === 'error')   errorCount++;
+                if (issue.severity === 'warning') warningCount++;
+            });
+        });
+
+        html += '<div class="message message-warning warning"><p>' +
+            escapeHtml($t('Found %1 error(s) and %2 warning(s) across %3 item(s).')
+                .replace('%1', errorCount)
+                .replace('%2', warningCount)
+                .replace('%3', allItems.length)) +
+            '</p></div>';
+
+        html += '<table class="data-grid" style="width:100%;margin-top:20px;">' +
+            '<thead><tr>' +
+            '<th scope="col">' + escapeHtml($t('Type')) + '</th>' +
+            '<th scope="col">' + escapeHtml($t('Name')) + '</th>' +
+            '<th scope="col">' + escapeHtml($t('Identifier')) + '</th>' +
+            '<th scope="col">' + escapeHtml($t('Severity')) + '</th>' +
+            '<th scope="col">' + escapeHtml($t('Rule')) + '</th>' +
+            '<th scope="col">' + escapeHtml($t('Issue')) + '</th>' +
+            '</tr></thead><tbody>';
+
+        allItems.forEach(function (item) {
+            item.issues.forEach(function (issue, idx) {
+                var rowspan = idx === 0 ? ' rowspan="' + item.issues.length + '"' : '';
+                var severityClass = issue.severity === 'error' ? 'color:red;font-weight:bold' : 'color:orange;font-weight:bold';
+
+                html += '<tr>';
+                if (idx === 0) {
+                    html += '<td' + rowspan + '>' + escapeHtml(item.type === 'cms_page' ? $t('CMS Page') : $t('Product')) + '</td>';
+                    html += '<td' + rowspan + '>' + escapeHtml(item.name) + '</td>';
+                    html += '<td' + rowspan + '>' + escapeHtml(item.identifier) + '</td>';
+                }
+                html += '<td style="' + severityClass + '">' + escapeHtml(issue.severity.toUpperCase()) + '</td>';
+                html += '<td><code>' + escapeHtml(issue.rule) + '</code></td>';
+                html += '<td>' + escapeHtml(issue.message) + '</td>';
+                html += '</tr>';
+            });
+        });
+
+        html += '</tbody></table>';
+        $('#bfsg-results').html(html);
+    }
+
+    $('#bfsg-run-all').on('click', function ()      { runScan('all'); });
+    $('#bfsg-run-cms').on('click', function ()      { runScan('cms'); });
+    $('#bfsg-run-products').on('click', function () { runScan('products'); });
+});
+</script>

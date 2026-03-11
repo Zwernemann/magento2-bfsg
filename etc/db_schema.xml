@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="bfsg_aria_label" resource="default" engine="innodb" comment="BFSG ARIA Labels">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false"
+                identity="true" comment="Entity ID"/>
+        <column xsi:type="varchar" name="element_selector" nullable="false" length="255"
+                comment="CSS Selector or Element Identifier"/>
+        <column xsi:type="varchar" name="element_type" nullable="false" length="64"
+                comment="Element Type (button, input, link, select, etc.)"/>
+        <column xsi:type="varchar" name="aria_label" nullable="true" length="255"
+                comment="ARIA Label text"/>
+        <column xsi:type="varchar" name="aria_describedby" nullable="true" length="255"
+                comment="ID of the describing element"/>
+        <column xsi:type="smallint" name="store_id" padding="5" unsigned="true" nullable="false"
+                default="0" comment="Store ID (0 = All Stores)"/>
+        <column xsi:type="smallint" name="is_active" padding="5" unsigned="false" nullable="false"
+                default="1" comment="Is Active"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false"
+                default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false"
+                default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <index referenceId="BFSG_ARIA_LABEL_STORE_ID" indexType="btree">
+            <column name="store_id"/>
+        </index>
+        <index referenceId="BFSG_ARIA_LABEL_IS_ACTIVE" indexType="btree">
+            <column name="is_active"/>
+        </index>
+    </table>
+</schema>

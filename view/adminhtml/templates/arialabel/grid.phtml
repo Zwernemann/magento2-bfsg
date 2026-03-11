@@ -1,0 +1,58 @@
+<?php
+/** @var \Zwernemann\BFSG\Block\Adminhtml\AriaLabel\Grid $block */
+$collection = $block->getCollection();
+?>
+<div class="bfsg-arialabel-container" style="padding: 20px;">
+
+    <h2><?= $block->escapeHtml(__('ARIA Label Manager')) ?></h2>
+    <p>
+        <?= $block->escapeHtml(__('Define ARIA labels for interactive elements (buttons, inputs, links, selects) without editing .phtml templates. Labels are injected at runtime via JavaScript.')) ?>
+    </p>
+    <p>
+        <a href="<?= $block->escapeUrl($block->getNewUrl()) ?>" class="action-default scalable primary">
+            <?= $block->escapeHtml(__('Add New ARIA Label')) ?>
+        </a>
+    </p>
+
+    <?php if ($collection->getSize() === 0): ?>
+        <p><?= $block->escapeHtml(__('No ARIA labels defined yet. Click "Add New ARIA Label" to get started.')) ?></p>
+    <?php else: ?>
+        <table class="data-grid" style="width:100%">
+            <thead>
+                <tr>
+                    <th scope="col"><?= $block->escapeHtml(__('ID')) ?></th>
+                    <th scope="col"><?= $block->escapeHtml(__('CSS Selector')) ?></th>
+                    <th scope="col"><?= $block->escapeHtml(__('Element Type')) ?></th>
+                    <th scope="col"><?= $block->escapeHtml(__('aria-label')) ?></th>
+                    <th scope="col"><?= $block->escapeHtml(__('aria-describedby')) ?></th>
+                    <th scope="col"><?= $block->escapeHtml(__('Store')) ?></th>
+                    <th scope="col"><?= $block->escapeHtml(__('Active')) ?></th>
+                    <th scope="col"><?= $block->escapeHtml(__('Actions')) ?></th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($collection as $item): ?>
+                <tr>
+                    <td><?= (int) $item->getEntityId() ?></td>
+                    <td><code><?= $block->escapeHtml($item->getElementSelector()) ?></code></td>
+                    <td><?= $block->escapeHtml($item->getElementType()) ?></td>
+                    <td><?= $block->escapeHtml((string) $item->getAriaLabel()) ?></td>
+                    <td><?= $block->escapeHtml((string) $item->getAriaDescribedby()) ?></td>
+                    <td><?= (int) $item->getStoreId() === 0 ? $block->escapeHtml(__('All Stores')) : (int) $item->getStoreId() ?></td>
+                    <td><?= (int) $item->getIsActive() ? '✓' : '✗' ?></td>
+                    <td>
+                        <a href="<?= $block->escapeUrl($block->getEditUrl((int) $item->getEntityId())) ?>">
+                            <?= $block->escapeHtml(__('Edit')) ?>
+                        </a>
+                        &nbsp;|&nbsp;
+                        <a href="<?= $block->escapeUrl($block->getDeleteUrl((int) $item->getEntityId())) ?>"
+                           onclick="return confirm('<?= $block->escapeHtmlAttr(__('Are you sure you want to delete this ARIA label?')) ?>')">
+                            <?= $block->escapeHtml(__('Delete')) ?>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
+</div>

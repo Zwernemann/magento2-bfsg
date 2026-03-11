@@ -1,0 +1,147 @@
+<?php
+/** @var \Zwernemann\BFSG\Block\Frontend\AccessibilityWidget $block */
+if (!$block->isEnabled()) {
+    return;
+}
+?>
+<div id="bfsg-widget"
+     class="bfsg-widget bfsg-widget--<?= $block->escapeHtmlAttr($block->getWidgetPosition()) ?>"
+     role="region"
+     aria-label="<?= $block->escapeHtmlAttr(__('Accessibility Options')) ?>">
+
+    <button id="bfsg-toggle"
+            class="bfsg-widget__toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="bfsg-panel"
+            aria-label="<?= $block->escapeHtmlAttr(__('Open Accessibility Options')) ?>">
+        <svg aria-hidden="true" focusable="false" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2a2 2 0 110 4 2 2 0 010-4zm0 18a8 8 0 100-16 8 8 0 000 16zm-1-7.5V17h2v-4.5l2.5-1.5-1-1.73L12 10.5l-2.5-1.23-1 1.73L11 12.5z"/>
+        </svg>
+    </button>
+
+    <div id="bfsg-panel"
+         class="bfsg-widget__panel"
+         role="dialog"
+         aria-modal="false"
+         aria-label="<?= $block->escapeHtmlAttr(__('Accessibility Options')) ?>"
+         hidden>
+
+        <div class="bfsg-widget__header">
+            <h2 class="bfsg-widget__title"><?= $block->escapeHtml(__('Accessibility')) ?></h2>
+            <button class="bfsg-widget__close"
+                    type="button"
+                    aria-label="<?= $block->escapeHtmlAttr(__('Close Accessibility Options')) ?>">
+                &times;
+            </button>
+        </div>
+
+        <div class="bfsg-widget__body">
+
+            <?php if ($block->showContrastToggle()): ?>
+            <div class="bfsg-widget__option">
+                <button type="button"
+                        class="bfsg-option-btn"
+                        id="bfsg-contrast-btn"
+                        aria-pressed="false"
+                        data-bfsg-action="contrast">
+                    <span class="bfsg-option-btn__icon" aria-hidden="true">◑</span>
+                    <span class="bfsg-option-btn__label"><?= $block->escapeHtml(__('High Contrast')) ?></span>
+                </button>
+            </div>
+            <?php endif; ?>
+
+            <?php if ($block->showFontSizeToggle()): ?>
+            <div class="bfsg-widget__option">
+                <p class="bfsg-widget__option-label" id="bfsg-fontsize-label">
+                    <?= $block->escapeHtml(__('Font Size')) ?>
+                </p>
+                <div class="bfsg-fontsize-controls" role="group" aria-labelledby="bfsg-fontsize-label">
+                    <button type="button"
+                            class="bfsg-option-btn bfsg-option-btn--sm"
+                            data-bfsg-action="font-decrease"
+                            aria-label="<?= $block->escapeHtmlAttr(__('Decrease Font Size')) ?>">
+                        A&minus;
+                    </button>
+                    <button type="button"
+                            class="bfsg-option-btn bfsg-option-btn--sm"
+                            data-bfsg-action="font-reset"
+                            aria-label="<?= $block->escapeHtmlAttr(__('Reset Font Size')) ?>">
+                        A
+                    </button>
+                    <button type="button"
+                            class="bfsg-option-btn bfsg-option-btn--sm"
+                            data-bfsg-action="font-increase"
+                            aria-label="<?= $block->escapeHtmlAttr(__('Increase Font Size')) ?>">
+                        A+
+                    </button>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            <?php if ($block->showDyslexiaToggle()): ?>
+            <div class="bfsg-widget__option">
+                <button type="button"
+                        class="bfsg-option-btn"
+                        id="bfsg-dyslexia-btn"
+                        aria-pressed="false"
+                        data-bfsg-action="dyslexia">
+                    <span class="bfsg-option-btn__icon" aria-hidden="true">Aa</span>
+                    <span class="bfsg-option-btn__label"><?= $block->escapeHtml(__('Dyslexia Font')) ?></span>
+                </button>
+            </div>
+            <?php endif; ?>
+
+            <div class="bfsg-widget__option">
+                <button type="button"
+                        class="bfsg-option-btn"
+                        data-bfsg-action="reset-all">
+                    <span class="bfsg-option-btn__icon" aria-hidden="true">↺</span>
+                    <span class="bfsg-option-btn__label"><?= $block->escapeHtml(__('Reset All')) ?></span>
+                </button>
+            </div>
+
+        </div>
+
+        <div class="bfsg-widget__footer">
+            <p><?= $block->escapeHtml(__('Settings are saved in your browser and not transmitted to any server.')) ?></p>
+        </div>
+
+    </div>
+</div>
+
+<?php if ($block->isCustomerLoggedIn()): ?>
+<div id="bfsg-session-warning"
+     class="bfsg-session-warning"
+     role="alertdialog"
+     aria-modal="true"
+     aria-labelledby="bfsg-session-title"
+     aria-describedby="bfsg-session-desc"
+     hidden>
+    <div class="bfsg-session-warning__inner">
+        <h2 id="bfsg-session-title"><?= $block->escapeHtml(__('Your session is about to expire')) ?></h2>
+        <p id="bfsg-session-desc">
+            <?= $block->escapeHtml(__('Your session will expire soon. Do you want to stay logged in?')) ?>
+        </p>
+        <div>
+            <button type="button" id="bfsg-session-extend" class="action primary">
+                <?= $block->escapeHtml(__('Stay Logged In')) ?>
+            </button>
+            <button type="button" id="bfsg-session-logout">
+                <?= $block->escapeHtml(__('Log Out')) ?>
+            </button>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
+<div id="bfsg-aria-live-polite" aria-live="polite" aria-atomic="true" class="bfsg-sr-only"></div>
+<div id="bfsg-aria-live-assertive" aria-live="assertive" aria-atomic="true" class="bfsg-sr-only"></div>
+
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Zwernemann_BFSG/js/accessibility-widget": <?= /* @noEscape */ $block->getWidgetConfig() ?>
+    }
+}
+</script>
