@@ -1,4 +1,4 @@
-# Zwernemann_BFSG — Magento 2 Accessibility Module
+# BFSG — Magento 2 Accessibility Module
 
 > **WCAG 2.1 Level AA compliance for Magento 2 storefronts, built for the German Barrierefreiheitsstärkungsgesetz (BFSG) deadline of 28 June 2025.**
 
