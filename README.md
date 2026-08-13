@@ -2,6 +2,8 @@
 
 > **WCAG 2.1 Level AA compliance for Magento 2 storefronts, built for the German Barrierefreiheitsstärkungsgesetz (BFSG) deadline of 28 June 2025.**
 
+**Website:** [www.zwernemann.de](https://www.zwernemann.de)
+
 ---
 
 ## Table of Contents
@@ -28,6 +30,7 @@
 14. [Known Limitations & Roadmap](#14-known-limitations--roadmap)
 15. [Legal Disclaimer](#15-legal-disclaimer)
 16. [License](#16-license)
+17. [Contact & Support](#17-contact--support)
 
 ---
 
@@ -778,6 +781,18 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+## 17. Contact & Support
+
+**Zwernemann Medienentwicklung**
+Martin Zwernemann
+79730 Murg, Germany
+
+[To the website](https://www.zwernemann.de)
+
+If you have questions, problems, or ideas for new features – feel free to get in touch.
 
 ---
 
